@@ -40,15 +40,17 @@ export class ClientsService {
     return findClientDtos;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} client`;
   }
 
-  update(id: number, updateClientDto: UpdateClientDto) {
+  update(id: string, updateClientDto: UpdateClientDto) {
     return `This action updates a #${id} client`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} client`;
+  async remove(id: string) {
+    await this.prismaService.client.delete({
+      where: { id }
+    })
   }
 }
