@@ -1,11 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { PrismaService } from 'src/database/PrismaService';
 
 @Injectable()
 export class ClientsService {
-  create(createClientDto: CreateClientDto) {
-    return 'This action adds a new client';
+  constructor(private readonly prismaService: PrismaService) {}  
+
+  async create(createClientDto: CreateClientDto) {
+    const clientExist = await this.prismaService.client.findFirst({
+      where: {
+        email: createClientDto.email,
+      }
+    })
+
+    if(clientExist) {
+      throw new Error('Client exist');
+    }
+
+    await this.prismaService.client.create({
+      data: {
+        ...createClientDto,
+        role: 'user'
+      }
+    });
   }
 
   findAll() {
