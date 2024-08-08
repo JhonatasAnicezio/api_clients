@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { PrismaService } from 'src/database/PrismaService';
+import { FindClientDto } from './dto/find-client-dto';
 
 @Injectable()
 export class ClientsService {
@@ -26,8 +27,17 @@ export class ClientsService {
     });
   }
 
-  findAll() {
-    return `This action returns all clients`;
+  async findAll(): Promise<FindClientDto[]> {
+    const clients = await this.prismaService.client.findMany();
+    
+    const findClientDtos = clients.map(client => ({
+      name: client.name,
+      email: client.email,
+      phone: client.phone,
+      role: client.role,
+    }));
+
+    return findClientDtos;
   }
 
   findOne(id: number) {
