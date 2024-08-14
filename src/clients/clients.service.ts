@@ -8,7 +8,7 @@ import { FindClientDto } from './dto/find-client-dto';
 export class ClientsService {
   constructor(private readonly prismaService: PrismaService) {}  
 
-  async create(createClientDto: CreateClientDto) {
+  async create(createClientDto: CreateClientDto): Promise<FindClientDto> {
     const clientExist = await this.prismaService.client.findFirst({
       where: {
         email: createClientDto.email,
@@ -19,7 +19,7 @@ export class ClientsService {
       throw new Error('Client exist');
     }
 
-    await this.prismaService.client.create({
+    return await this.prismaService.client.create({
       data: {
         ...createClientDto,
         role: 'user'
@@ -42,15 +42,5 @@ export class ClientsService {
 
   findOne(id: string) {
     return `This action returns a #${id} client`;
-  }
-
-  update(id: string, updateClientDto: UpdateClientDto) {
-    return `This action updates a #${id} client`;
-  }
-
-  async remove(id: string) {
-    await this.prismaService.client.delete({
-      where: { id }
-    })
   }
 }
