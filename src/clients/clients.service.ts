@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
-import { UpdateClientDto } from './dto/update-client.dto';
 import { PrismaService } from 'src/database/PrismaService';
 import { FindClientDto } from './dto/find-client-dto';
 
