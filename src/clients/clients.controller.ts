@@ -12,8 +12,6 @@ export class ClientsController {
     @Body() createClientDto: CreateClientDto,
     @Body('password', HashPasswordPipe) password: string,
   ) {
-    console.log(password);
-
     return this.clientsService.create({
       ...createClientDto,
       password,
