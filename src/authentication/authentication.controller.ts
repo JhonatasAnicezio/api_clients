@@ -8,7 +8,6 @@ export class AuthenticationController {
 
   @Post()
   login(@Body() { email, password }: AuthenticationDto) {
-    console.log(password);
     return this.authenticationService.login({ email, password });
   }
 }
