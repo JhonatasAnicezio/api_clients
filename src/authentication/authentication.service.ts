@@ -28,7 +28,7 @@ export class AuthenticationService {
 
     const payload = {
       sub: client.id,
-      nameUser: client.name,
+      name: client.name,
     }
 
     return await this.jwtService.signAsync(payload);
