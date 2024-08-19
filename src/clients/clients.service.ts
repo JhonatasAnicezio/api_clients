@@ -11,7 +11,7 @@ export class ClientsService {
     const clientExist = await this.prismaService.client.findFirst({
       where: {
         email: createClientDto.email,
-      }
+      },
     })
 
     if(clientExist) {
@@ -22,21 +22,24 @@ export class ClientsService {
       data: {
         ...createClientDto,
         role: 'user'
-      }
+      },
     });
   }
 
   async findAll(): Promise<FindClientDto[]> {
-    const clients = await this.prismaService.client.findMany();
-    
-    const findClientDtos = clients.map(client => ({
-      name: client.name,
-      email: client.email,
-      phone: client.phone,
-      role: client.role,
-    }));
+    const clients = await this.prismaService.client.findMany({
+      where: {
+        role: { not: 'admin' }
+      },
+      select: {
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+      },
+    });
 
-    return findClientDtos;
+    return clients;
   }
 
   findOne(id: string) {
