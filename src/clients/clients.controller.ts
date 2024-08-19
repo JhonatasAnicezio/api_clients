@@ -29,10 +29,10 @@ export class ClientsController {
 
   @Get('/me')
   @UseGuards(AuthenticationGuard)
-  findOne(@Req() request: RequestWhitClient): Promise<FindClientDto> {
+  async findOne(@Req() request: RequestWhitClient): Promise<FindClientDto> {
     const { sub } = request.user;
 
-    return this.clientsService.findOne(sub);
+    return await this.clientsService.findOne(sub);
   }
 
   @Delete(':id')

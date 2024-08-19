@@ -43,8 +43,6 @@ export class ClientsService {
   }
 
   async findOne(id: string): Promise<FindClientDto> {
-
-    try {
       const client = await this.prismaService.client.findUnique({
         where: { id },
         select: {
@@ -55,11 +53,13 @@ export class ClientsService {
           role: true,
         }
       });
-      
-      return client;
-    } catch (error) {
+
+      if(client) {
+        return client;
+      }
+
       throw new NotFoundException('client not found');
-    }
+
   }
 
   async delete(id: string) {
