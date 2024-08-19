@@ -61,4 +61,12 @@ export class ClientsService {
       throw new NotFoundException('client not found');
     }
   }
+
+  async delete(id: string) {
+    await this.prismaService.client.delete({
+      where: { id },
+    })
+
+    return 'delete';
+  }
 }

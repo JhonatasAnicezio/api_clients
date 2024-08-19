@@ -34,4 +34,10 @@ export class ClientsController {
 
     return this.clientsService.findOne(sub);
   }
+
+  @Delete(':id')
+  @UseGuards(AuthenticationGuard)
+  delete(@Param() id: string): Promise<string> {
+    return this.clientsService.delete(id);
+  }
 }
