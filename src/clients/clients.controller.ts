@@ -5,6 +5,7 @@ import { HashPasswordPipe } from 'src/common/pipes/hash-password.pipe';
 import { AuthenticationGuard } from 'src/authentication/authentication.guard';
 import { FindClientDto } from './dto/find-client-dto';
 import { RequestWhitClient } from 'src/interfaces/request-whit-client';
+import { ClientGuard } from './client.guard';
 
 @Controller('clients')
 export class ClientsController {
@@ -22,7 +23,7 @@ export class ClientsController {
   }
   
   @Get()
-  @UseGuards(AuthenticationGuard)
+  @UseGuards(AuthenticationGuard, ClientGuard)
   findAll(): Promise<FindClientDto[]> {
     return this.clientsService.findAll();
   }
