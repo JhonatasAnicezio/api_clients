@@ -69,4 +69,24 @@ export class ClientsService {
 
     return 'delete';
   }
+
+  async updateRole(id: string, role: string) {
+    const clientNewRole = await this.prismaService.client.update({
+      where: { id },
+      data: {
+        role: {
+          set: role,
+        }
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+      }
+    })
+
+    return clientNewRole;
+  }
 }

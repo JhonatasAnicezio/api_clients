@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { HashPasswordPipe } from 'src/common/pipes/hash-password.pipe';
@@ -37,7 +37,12 @@ export class ClientsController {
 
   @Delete(':id')
   @UseGuards(AuthenticationGuard)
-  delete(@Param() id: string): Promise<string> {
+  delete(@Param('id') id: string): Promise<string> {
     return this.clientsService.delete(id);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body('role') role: string) {
+    return this.clientsService.updateRole(id, role);
   }
 }
