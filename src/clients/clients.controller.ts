@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { HashPasswordPipe } from 'src/common/pipes/hash-password.pipe';
 import { AuthenticationGuard } from 'src/authentication/authentication.guard';
+import { FindClientDto } from './dto/find-client-dto';
+import { RequestWhitClient } from 'src/interfaces/request-whit-client';
 
 @Controller('clients')
 export class ClientsController {
@@ -12,7 +14,7 @@ export class ClientsController {
   create(
     @Body() createClientDto: CreateClientDto,
     @Body('password', HashPasswordPipe) password: string,
-  ) {
+  ): Promise<FindClientDto> {
     return this.clientsService.create({
       ...createClientDto,
       password,
@@ -21,13 +23,15 @@ export class ClientsController {
   
   @Get()
   @UseGuards(AuthenticationGuard)
-  findAll() {
+  findAll(): Promise<FindClientDto[]> {
     return this.clientsService.findAll();
   }
 
-  @Get(':id')
+  @Get('/me')
   @UseGuards(AuthenticationGuard)
-  findOne(@Param('id') id: string) {
-    return this.clientsService.findOne(id);
+  findOne(@Req() request: RequestWhitClient): Promise<FindClientDto> {
+    const { sub } = request.user;
+
+    return this.clientsService.findOne(sub);
   }
 }

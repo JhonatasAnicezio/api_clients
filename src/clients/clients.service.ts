@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { PrismaService } from 'src/database/PrismaService';
 import { FindClientDto } from './dto/find-client-dto';
@@ -42,7 +42,23 @@ export class ClientsService {
     return clients;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} client`;
+  async findOne(id: string): Promise<FindClientDto> {
+
+    try {
+      const client = await this.prismaService.client.findUnique({
+        where: { id },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+        }
+      });
+      
+      return client;
+    } catch (error) {
+      throw new NotFoundException('client not found');
+    }
   }
 }
