@@ -32,6 +32,7 @@ export class ClientsService {
         role: { not: 'admin' }
       },
       select: {
+        id: true,
         name: true,
         email: true,
         phone: true,
