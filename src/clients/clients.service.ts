@@ -2,29 +2,44 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateClientDto } from './dto/create-client.dto';
 import { PrismaService } from 'src/database/PrismaService';
 import { FindClientDto } from './dto/find-client-dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class ClientsService {
-  constructor(private readonly prismaService: PrismaService) {}  
+  constructor(
+    private readonly prismaService: PrismaService,
+    private jwtService: JwtService,
+  ) {}  
 
   async create(createClientDto: CreateClientDto) {
+    const emailLower = createClientDto.email.toLowerCase();
+
     const clientExist = await this.prismaService.client.findFirst({
       where: {
-        email: createClientDto.email,
+        email: emailLower,
       },
     })
 
     if(clientExist) {
-      throw new Error('Client exist');
+      throw new BadRequestException('Email ou telefone ja cadastrado');
     }
 
     try {
-      await this.prismaService.client.create({
+      const client = await this.prismaService.client.create({
         data: {
           ...createClientDto,
           role: 'user'
         }
       });
+
+      const payload = {
+        sub: client.id,
+        name: client.name,
+      }
+  
+      const result = await this.jwtService.signAsync(payload);
+
+      return { token: result };
     } catch (error) {
       throw new BadRequestException('Unable to create new client')
     }

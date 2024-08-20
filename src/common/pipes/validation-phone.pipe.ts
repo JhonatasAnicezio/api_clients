@@ -2,10 +2,10 @@ import { ArgumentMetadata, Injectable, PipeTransform, UnauthorizedException } fr
 
 @Injectable()
 export class ValidationPhone implements PipeTransform {
-    transform(phone: number) {
-        const convert = phone.toString();
+    transform(phone: string) {
+        const regex = /^\d+$/;
 
-        if(convert.length > 9) {
+        if(phone.length < 9 && regex.test(phone)) {
             throw new UnauthorizedException('format invalid');
         }
 

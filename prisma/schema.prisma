@@ -14,7 +14,7 @@ model Client {
   id       String @id @default(uuid())
   name     String
   email    String @unique
-  phone    Int    @unique
+  phone    String @unique
   password String
   role     String
 

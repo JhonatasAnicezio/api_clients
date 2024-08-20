@@ -16,7 +16,7 @@ export class ClientsController {
   create(
     @Body(new ValidationPipe()) createClientDto: CreateClientDto,
     @Body('password', HashPasswordPipe) password: string,
-    @Body('phone', ValidationPhone) phone: number,
+    @Body('phone', ValidationPhone) phone: string,
   ) {
     return this.clientsService.create({
       ...createClientDto,

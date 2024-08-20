@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthenticationDto } from './dto/authentication.dto';
 import { PrismaService } from 'src/database/PrismaService';
 
@@ -13,9 +13,13 @@ export class AuthenticationService {
   ) {}
 
   async login({ email, password }: AuthenticationDto) {
+    const emailLower = email.toLowerCase();
+
     const client = await this.prismaService.client.findUnique({
-      where: { email },
+      where: { email: emailLower },
     })
+
+    if(!client) throw new BadRequestException('email or password incorrect');
 
     const authentic = await bcrypt.compare(
       password,
@@ -31,6 +35,8 @@ export class AuthenticationService {
       name: client.name,
     }
 
-    return await this.jwtService.signAsync(payload);
+    const result = await this.jwtService.signAsync(payload);
+
+    return { token: result }
   }
 }
