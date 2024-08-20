@@ -37,12 +37,13 @@ export class ClientsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthenticationGuard)
-  delete(@Param('id') id: string): Promise<string> {
+  @UseGuards(AuthenticationGuard, ClientGuard)
+  delete(@Param('id') id: string) {
     return this.clientsService.delete(id);
   }
 
   @Put(':id')
+  @UseGuards(AuthenticationGuard, ClientGuard)
   update(@Param('id') id: string, @Body('role') role: string) {
     return this.clientsService.updateRole(id, role);
   }

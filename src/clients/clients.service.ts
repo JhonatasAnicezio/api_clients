@@ -63,30 +63,37 @@ export class ClientsService {
   }
 
   async delete(id: string) {
-    await this.prismaService.client.delete({
-      where: { id },
-    })
+    try {
+      
+      await this.prismaService.client.delete({
+        where: { id },
+      })
+    } catch (error) {
+      throw new NotFoundException('client not found');
+    }
 
-    return 'delete';
   }
 
   async updateRole(id: string, role: string) {
-    const clientNewRole = await this.prismaService.client.update({
-      where: { id },
-      data: {
-        role: {
-          set: role,
-        }
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-      }
-    })
 
-    return clientNewRole;
+    try {
+      await this.prismaService.client.update({
+        where: { id },
+        data: {
+          role: {
+            set: role,
+          }
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+        }
+      })
+    } catch (error) {
+      throw new NotFoundException('not update');
+    }
   }
 }
