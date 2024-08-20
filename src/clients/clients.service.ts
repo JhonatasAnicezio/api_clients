@@ -19,7 +19,6 @@ export class ClientsService {
     }
 
     try {
-      
       await this.prismaService.client.create({
         data: {
           ...createClientDto,
@@ -60,17 +59,24 @@ export class ClientsService {
         }
       });
 
-      if(client) {
-        return client;
+      if(!client) {
+        throw new NotFoundException('client not found');
       }
-
-      throw new NotFoundException('client not found');
+      
+      return client;
 
   }
 
   async delete(id: string) {
-    try {
-      
+    const client = await this.prismaService.client.findUnique({
+      where: { id },
+    });
+
+    if(!client) {
+      throw new NotFoundException('client not found');  
+    } 
+
+    try {  
       await this.prismaService.client.delete({
         where: { id },
       })
@@ -81,6 +87,13 @@ export class ClientsService {
   }
 
   async updateRole(id: string, role: string) {
+    const client = await this.prismaService.client.findUnique({
+      where: { id },
+    });
+
+    if(!client) {
+      throw new NotFoundException('client not found');  
+    } 
 
     try {
       await this.prismaService.client.update({
