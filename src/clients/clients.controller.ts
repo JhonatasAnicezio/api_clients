@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put, ValidationPipe } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { HashPasswordPipe } from 'src/common/pipes/hash-password.pipe';
@@ -13,7 +13,7 @@ export class ClientsController {
   
   @Post()
   create(
-    @Body() createClientDto: CreateClientDto,
+    @Body(new ValidationPipe()) createClientDto: CreateClientDto,
     @Body('password', HashPasswordPipe) password: string,
   ): Promise<FindClientDto> {
     return this.clientsService.create({
