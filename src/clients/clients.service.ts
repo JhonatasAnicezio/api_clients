@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { PrismaService } from 'src/database/PrismaService';
 import { FindClientDto } from './dto/find-client-dto';
@@ -7,7 +7,7 @@ import { FindClientDto } from './dto/find-client-dto';
 export class ClientsService {
   constructor(private readonly prismaService: PrismaService) {}  
 
-  async create(createClientDto: CreateClientDto): Promise<FindClientDto> {
+  async create(createClientDto: CreateClientDto) {
     const clientExist = await this.prismaService.client.findFirst({
       where: {
         email: createClientDto.email,
@@ -18,12 +18,17 @@ export class ClientsService {
       throw new Error('Client exist');
     }
 
-    return await this.prismaService.client.create({
-      data: {
-        ...createClientDto,
-        role: 'user'
-      },
-    });
+    try {
+      
+      await this.prismaService.client.create({
+        data: {
+          ...createClientDto,
+          role: 'user'
+        }
+      });
+    } catch (error) {
+      throw new BadRequestException('Unable to create new client')
+    }
   }
 
   async findAll(): Promise<FindClientDto[]> {

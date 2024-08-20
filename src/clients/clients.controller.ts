@@ -6,6 +6,7 @@ import { AuthenticationGuard } from 'src/authentication/authentication.guard';
 import { FindClientDto } from './dto/find-client-dto';
 import { RequestWhitClient } from 'src/interfaces/request-whit-client';
 import { ClientGuard } from './client.guard';
+import { ValidationPhone } from 'src/common/pipes/validation-phone.pipe';
 
 @Controller('clients')
 export class ClientsController {
@@ -15,9 +16,11 @@ export class ClientsController {
   create(
     @Body(new ValidationPipe()) createClientDto: CreateClientDto,
     @Body('password', HashPasswordPipe) password: string,
-  ): Promise<FindClientDto> {
+    @Body('phone', ValidationPhone) phone: number,
+  ) {
     return this.clientsService.create({
       ...createClientDto,
+      phone,
       password,
     });
   }

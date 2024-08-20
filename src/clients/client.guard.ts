@@ -19,7 +19,7 @@ export class ClientGuard implements CanActivate {
             select: { role: true }
         });
 
-        if(client.role !== 'admin') {
+        if(client?.role !== 'admin') {
             return false;
         }
 
