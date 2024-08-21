@@ -5,8 +5,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: 'https://grolet-patisserie.vercel.app', // Permitir requisições apenas dessa origem
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
+    origin: 'https://grolet-patisserie.vercel.app/*', // Permitir requisições apenas dessa origem
     credentials: true, // Permite o envio de cookies nas requisições
   });
 
