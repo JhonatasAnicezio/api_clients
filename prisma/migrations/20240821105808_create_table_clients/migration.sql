@@ -1,11 +1,13 @@
 -- CreateTable
 CREATE TABLE "clients" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "phone" INTEGER NOT NULL,
+    "phone" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" TEXT NOT NULL
+    "role" TEXT NOT NULL,
+
+    CONSTRAINT "clients_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
