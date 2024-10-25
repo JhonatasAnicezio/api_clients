@@ -186,10 +186,10 @@ Nessas rotas é obrigatrio a realização do login por parte de um administrador
 
 ## Autor
 
-- Portifolio - [https://nestjs.com](https://jhonatas-anicezio.vercel.app/)
-- GitHub - [Jhonatas Anicezio](https://github.com/JhonatasAnicezio)
-- Linkedin - [@nestframework](https://www.linkedin.com/in/jhonatas-anicezio/)
+- Portifolio - [jhonatas-anicezio](https://jhonatas-anicezio.vercel.app/)
+- GitHub - [github/JhonatasAnicezio](https://github.com/JhonatasAnicezio)
+- Linkedin - [@jhonatasanicezio](https://www.linkedin.com/in/jhonatas-anicezio/)
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+Api Client is [MIT licensed](LICENSE).
